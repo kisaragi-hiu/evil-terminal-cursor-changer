@@ -160,12 +160,13 @@ echo -n $TERM_PROFILE"))
   "Make escape sequence for cursor shape."
   (cond ((or (etcc--in-xterm?)
              (etcc--in-apple-terminal?)
-             (etcc--in-iterm?))
+             (etcc--in-iterm?)
+             (etcc--in-dumb?))
          (etcc--make-xterm-cursor-shape-seq shape))
         ((etcc--in-konsole?)
          (etcc--make-konsole-cursor-shape-seq shape))
-        ((etcc--in-dumb?)
-         (etcc--make-xterm-cursor-shape-seq shape))))
+        ((etcc--in-gnome-terminal?)
+         (etcc--make-gnome-terminal-cursor-shape-seq shape))))
 
 (defun etcc--make-cursor-color-seq (color)
   "Make escape sequence for cursor color."
