@@ -1,4 +1,4 @@
-;;; evil-terminal-cursor-changer.el --- Change cursor shape and color by evil state in terminal  -*- coding: utf-8; -*-
+;;; etcc.el --- Change cursor shape and color by evil state in terminal  -*- lexical-binding: t -*-
 ;;
 ;; Filename: evil-terminal-cursor-changer.el
 ;; Description: Change cursor shape and color by evil state in terminal.
@@ -80,14 +80,14 @@
 ;; the Free Software Foundation, Inc., 51 Franklin Street, Fifth
 ;; Floor, Boston, MA 02110-1301, USA.
 ;;
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-;;
+;;; Commentary:
+;; Evil terminal cursor changer.
 ;;; Code:
 
 (require 'evil)
 (require 'color)
 
-(defgroup evil-terminal-cursor-changer nil
+(defgroup etcc nil
   "Cursor changer for evil on terminal."
   :group 'cursor
   :prefix "etcc-")
@@ -95,12 +95,12 @@
 (defcustom etcc-use-color nil
   "Whether to cursor color."
   :type 'boolean
-  :group 'evil-terminal-cursor-changer)
+  :group 'etcc)
 
 (defcustom etcc-use-blink t
   "Whether to cursor blink."
   :type 'boolean
-  :group 'evil-terminal-cursor-changer)
+  :group 'etcc)
 
 (defun etcc--in-dumb? ()
   "Running in dumb."
