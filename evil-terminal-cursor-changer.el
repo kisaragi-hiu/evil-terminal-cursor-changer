@@ -152,8 +152,6 @@ echo -n $TERM_PROFILE"))
   "Make escape sequence for tumx."
   (let ((prefix "\ePtmux;\e")
         (suffix "\e\\"))
-    (concat prefix seq suffix)
-    (concat prefix seq suffix)
     (concat prefix seq suffix)))
 
 (defun etcc--make-konsole-cursor-shape-seq (shape)
