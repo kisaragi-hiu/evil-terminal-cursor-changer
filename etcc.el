@@ -46,47 +46,39 @@
   :type 'boolean
   :group 'etcc)
 
+(defun etcc--terminal ()
+  "What terminal are we in?"
+  (cond
+   ((getenv "TMUX")                                   'tmux)
+   ((string= "dumb" (getenv "TERM"))                  'dumb)
+   ((string= "iTerm.app" (getenv "TERM_PROGRAM"))     'iterm)
+   ((string= "Apple_Terminal" (getenv "TERM_PROGRAM") 'apple-terminal))
+   ((getenv "XTERM_VERSION")                          'xterm)
+   ((getenv "KONSOLE_PROFILE_NAME")                   'konsole)))
+
 (defun etcc--in-dumb? ()
   "Running in dumb."
-  (string= (getenv "TERM") "dumb"))
+  (eq (etcc--terminal) 'dumb))
 
 (defun etcc--in-iterm? ()
   "Running in iTerm."
-  (string= (getenv "TERM_PROGRAM") "iTerm.app"))
+  (eq (etcc--terminal) 'iterm))
 
 (defun etcc--in-xterm? ()
   "Runing in xterm."
-  (getenv "XTERM_VERSION"))
-
-(defun etcc--in-gnome-terminal? ()
-  "Running in gnome-terminal."
-  (string= (getenv "COLORTERM") "gnome-terminal"))
+  (eq (etcc--terminal) 'xterm))
 
 (defun etcc--in-konsole? ()
   "Running in konsole."
-  (getenv "KONSOLE_PROFILE_NAME"))
+  (eq (etcc--terminal) 'konsole))
 
 (defun etcc--in-apple-terminal? ()
   "Running in Apple Terminal"
-  (string= (getenv "TERM_PROGRAM") "Apple_Terminal"))
+  (eq (etcc--terminal) 'apple-terminal))
 
 (defun etcc--in-tmux? ()
   "Running in tmux."
-  (getenv "TMUX"))
-
-(defun etcc--get-current-gnome-profile-name ()
-  "Return Current profile name of Gnome Terminal."
-  ;; https://github.com/helino/current-gnome-terminal-profile/blob/master/current-gnome-terminal-profile.sh
-  (if (etcc--in-gnome-terminal?)
-      (let ((cmd "#!/bin/sh
-FNAME=$HOME/.current_gnome_profile
-gnome-terminal --save-config=$FNAME
-ENTRY=`grep ProfileID < $FNAME`
-rm $FNAME
-TERM_PROFILE=${ENTRY#*=}
-echo -n $TERM_PROFILE"))
-        (shell-command-to-string cmd))
-    "Default"))
+  (eq (etcc--terminal) 'tmux))
 
 (defun etcc--color-name-to-hex (color)
   "Convert color name to hex value."
@@ -118,22 +110,6 @@ echo -n $TERM_PROFILE"))
         (etcc--make-tmux-seq seq)
       seq)))
 
-(defun etcc--make-gnome-terminal-cursor-shape-seq (shape)
-  "Make escape sequence for gnome terminal."
-  (let* ((profile (etcc--get-current-gnome-profile-name))
-         (prefix  (format "gconftool-2 --type string --set /apps/gnome-terminal/profiles/%s/cursor_shape "
-                          profile))
-         (box     "block")
-         (bar     "ibeam")
-         (hbar    "underline"))
-    (unless (member shape '(box bar hbar))
-      (setq shape 'box))
-    (cond ((eq shape 'box)
-           (concat prefix box))
-          ((eq shape 'bar)
-           (concat prefix bar))
-          ((eq shape 'hbar) hbar))))
-
 (defun etcc--make-xterm-cursor-shape-seq (shape)
   "Make escape sequence for XTerm."
   (let ((prefix      "\e[")
@@ -164,9 +140,7 @@ echo -n $TERM_PROFILE"))
              (etcc--in-dumb?))
          (etcc--make-xterm-cursor-shape-seq shape))
         ((etcc--in-konsole?)
-         (etcc--make-konsole-cursor-shape-seq shape))
-        ((etcc--in-gnome-terminal?)
-         (etcc--make-gnome-terminal-cursor-shape-seq shape))))
+         (etcc--make-konsole-cursor-shape-seq shape))))
 
 (defun etcc--make-cursor-color-seq (color)
   "Make escape sequence for cursor color."
