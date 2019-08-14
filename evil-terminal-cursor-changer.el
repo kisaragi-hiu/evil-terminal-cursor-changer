@@ -261,47 +261,42 @@ echo -n $TERM_PROFILE"))
       (if (listp cursor-type)
           (etcc--apply-to-terminal (etcc--make-cursor-shape-seq (car cursor-type)))))))
 
-;; (defadvice evil-set-cursor-color (after etcc--evil-set-cursor (arg) activate)
-;;   (unless (display-graphic-p)
-;;     (etcc--evil-set-cursor-color arg)))
-
-;; (defadvice evil-set-cursor (after etcc--evil-set-cursor (arg) activate)
-;;   (unless (display-graphic-p)
-;;     (etcc--evil-set-cursor)))
-
-;;;###autoload
-(defun evil-terminal-cursor-changer-activate ()
+(defun etcc-on ()
   "Enable evil terminal cursor changer."
   (interactive)
   (if etcc-use-blink (add-hook 'blink-cursor-mode-hook #'etcc--evil-set-cursor))
-  (add-hook 'pre-command-hook 'etcc--evil-set-cursor)
-  (add-hook 'post-command-hook 'etcc--evil-set-cursor)
   ;; (ad-activate 'evil-set-cursor)
   ;; (advice-add 'evil-set-cursor :after 'etcc--evil-set-cursor)
   ;; (advice-add 'evil-set-cursor :after #'etcc--evil-set-cursor)
   ;; (advice-add 'evil-set-cursor-color :after #'etcc--evil-set-cursor-color)
-  )
+  (add-hook 'pre-command-hook 'etcc--evil-set-cursor)
+  (add-hook 'post-command-hook 'etcc--evil-set-cursor))
 
-;;;###autoload
-(defalias 'etcc-on 'evil-terminal-cursor-changer-activate)
-
-;;;###autoload
-(defun evil-terminal-cursor-changer-deactivate ()
+(defun etcc-off ()
   "Disable evil terminal cursor changer."
   (interactive)
   (if etcc-use-blink (remove-hook 'blink-cursor-mode-hook 'etcc--evil-set-cursor))
-  (remove-hook 'pre-command-hook 'etcc--evil-set-cursor)
-  (remove-hook 'post-command-hook 'etcc--evil-set-cursor)
   ;; (ad-deactivate 'evil-set-cursor)
   ;; (advice-remove 'evil-set-cursor 'etcc--evil-set-cursor)
   ;; (advice-add 'evil-set-cursor 'etcc--evil-set-cursor)
   ;; (advice-remove 'evil-set-cursor-color 'etcc--evil-set-cursor-color)
-  )
+  (remove-hook 'pre-command-hook 'etcc--evil-set-cursor)
+  (remove-hook 'post-command-hook 'etcc--evil-set-cursor))
+
+(define-obsolete-function-alias
+  'evil-terminal-cursor-changer-activate 'etcc-on "2019-08-15")
+(define-obsolete-function-alias
+  'evil-terminal-cursor-changer-deactivate 'etcc-off "2019-08-15")
 
 ;;;###autoload
-(defalias 'etcc-off 'evil-terminal-cursor-changer-deactivate)
+(define-minor-mode etcc-mode
+  "Toggle Evil terminal cursor changer mode.
+
+Change cursor shape and color by evil state in terminal."
+  :group 'etcc
+  :global t :lighter " Etcc"
+  (if etcc-mode (etcc-on) (etcc-off)))
 
 (provide 'evil-terminal-cursor-changer)
 
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;; evil-terminal-cursor-changer.el ends here
