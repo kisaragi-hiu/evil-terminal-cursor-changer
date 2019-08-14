@@ -1,69 +1,13 @@
 ;;; etcc.el --- Change cursor shape and color by evil state in terminal  -*- lexical-binding: t -*-
 ;;
-;; Filename: evil-terminal-cursor-changer.el
-;; Description: Change cursor shape and color by evil state in terminal.
 ;; Author: 7696122
 ;; Maintainer: 7696122
-;; Created: Sat Nov  2 12:17:13 2013 (+0900)
+;; Fork: Kisaragi Hiu
 ;; Version: 0.0.4
-;; Package-Version: 20150819.907
-;; Package-Requires: ((evil "1.0.8"))
-;; Last-Updated: Wed Aug 26 23:21:36 2015 (+0900)
-;;           By: 7696122
-;;     Update #: 390
-;; URL: https://github.com/7696122/evil-terminal-cursor-changer
-;; Doc URL: https://github.com/7696122/evil-terminal-cursor-changer/blob/master/README.md
+;; Package-Requires: ((emacs "24.1") (evil "1.0.8"))
+;; URL: https://github.com/kisaragi-hiu/evil-terminal-cursor-changer
 ;; Keywords: evil, terminal, cursor
-;; Compatibility: GNU Emacs: 24.x
 ;;
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-;;
-;;; Commentary:
-
-;; [![MELPA](http://melpa.org/packages/evil-terminal-cursor-changer-badge.svg)](http://melpa.org/#/evil-terminal-cursor-changer)
-
-;; ## Introduce ##
-;;
-;; evil-terminal-cursor-changer is changing cursor shape and color by evil state for evil-mode.
-;;
-;; When running in terminal, It's especially helpful to recognize evil's state.
-;;
-;; ## Install ##
-;;
-;; 1. Config melpa: http://melpa.org/#/getting-started
-;;
-;; 2. M-x package-install RET evil-terminal-cursor-changer RET
-;;
-;; 3. Add code to your emacs config file:（for example: ~/.emacs）：
-;;
-;;      (unless (display-graphic-p)
-;;              (require 'evil-terminal-cursor-changer)
-;;              (evil-terminal-cursor-changer-activate) ; or (etcc-on)
-;;              )
-;;
-;; If want change cursor shape type, add below line. This is evil's setting.
-;;
-;;      (setq evil-motion-state-cursor 'box)  ; █
-;;      (setq evil-visual-state-cursor 'box)  ; █
-;;      (setq evil-normal-state-cursor 'box)  ; █
-;;      (setq evil-insert-state-cursor 'bar)  ; ⎸
-;;      (setq evil-emacs-state-cursor  'hbar) ; _
-;;
-;; Now, works in XTerm, Gnome Terminal(Gnome Desktop), iTerm(Mac OS
-;; X), Konsole(KDE Desktop), dumb(etc. mintty), Apple
-;; Terminal.app(restrictive supporting). If using Apple Terminal.app,
-;; must install SIMBL(http://www.culater.net/software/SIMBL/SIMBL.php)
-;; and MouseTerm
-;; plus(https://github.com/saitoha/mouseterm-plus/releases) to use
-;; evil-terminal-cursor-changer. That makes to support VT's DECSCUSR
-;; sequence.
-;;
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-;;
-;;; Change Log:
-;;
-;;
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;
 ;; This program is free software; you can redistribute it and/or
 ;; modify it under the terms of the GNU General Public License as
@@ -297,6 +241,6 @@ Change cursor shape and color by evil state in terminal."
   :global t :lighter " Etcc"
   (if etcc-mode (etcc-on) (etcc-off)))
 
-(provide 'evil-terminal-cursor-changer)
+(provide 'etcc)
 
 ;;; evil-terminal-cursor-changer.el ends here
